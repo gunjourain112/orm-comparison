@@ -8,8 +8,8 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: update # TypeORM의 synchronize: true
+    show-sql: true      # TypeORM의 logging: true
     properties:
       hibernate:
         format_sql: true

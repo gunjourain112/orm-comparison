@@ -13,8 +13,8 @@ import { AppService } from './app.service';
       password: 'password',
       database: 'orm_compare',
       entities: [],
-      synchronize: true, // JPA의 ddl-auto: update와 동일
-      logging: true,     // JPA의 show-sql: true와 동일
+      synchronize: true, // JPA의 ddl-auto: update
+      logging: true,     // JPA의 show-sql: true
     }),
   ],
   controllers: [AppController],
