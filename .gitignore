@@ -1,0 +1,15 @@
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Project specific ignores are handled within subfolders (jpa/, typeorm/)
