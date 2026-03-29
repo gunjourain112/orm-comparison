@@ -9,7 +9,6 @@ class SummonerRepositoryImpl(
     private val queryFactory: JPAQueryFactory
 ) : SummonerRepositoryCustom {
 
-    // JPQL
     override fun findActiveHighLevel(minLevel: Int): List<Summoner> {
         return em.createQuery(
             "SELECT s FROM Summoner s WHERE s.tagLine IS NOT NULL AND s.summonerLevel >= :minLevel",
@@ -19,7 +18,6 @@ class SummonerRepositoryImpl(
             .resultList
     }
 
-    // QueryDSL
     override fun findActiveHighLevelDsl(minLevel: Int): List<Summoner> {
         return queryFactory
             .selectFrom(summoner)
@@ -30,7 +28,6 @@ class SummonerRepositoryImpl(
             .fetch()
     }
 
-    // Native Query
     override fun findByNameContainingNative(keyword: String): List<Summoner> {
         @Suppress("UNCHECKED_CAST")
         return em.createNativeQuery(

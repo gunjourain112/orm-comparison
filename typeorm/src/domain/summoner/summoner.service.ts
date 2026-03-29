@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { Summoner } from './summoner.entity';
+import { SummonerProfile } from './summoner-profile.entity';
 import { SummonerRepository } from './summoner.repository';
 
 @Injectable()
@@ -18,7 +19,6 @@ export class SummonerService {
     return this.summonerRepository.findActiveHighLevel(minLevel);
   }
 
-  // 6-1: transaction() 콜백 방식
   async create(name: string): Promise<Summoner> {
     return this.dataSource.transaction(async (manager) => {
       const summoner = manager.create(Summoner, { name });
@@ -26,7 +26,25 @@ export class SummonerService {
     });
   }
 
-  // 6-2: QueryRunner — 수동 begin/commit/rollback
+  async getAllSummonerTiers(): Promise<string[]> {
+    const summoners = await this.summonerRepository.findAll();
+    return Promise.all(
+      summoners.map(async (s) => {
+        const profile = await this.dataSource
+          .getRepository(SummonerProfile)
+          .findOneBy({ summoner: { id: s.id } });
+        return profile?.tier ?? 'unranked';
+      })
+    );
+  }
+
+  async getAllSummonerTiersWithRelations(): Promise<string[]> {
+    const summoners = await this.dataSource.getRepository(Summoner).find({
+      relations: { profile: true },
+    });
+    return summoners.map((s) => s.profile?.tier ?? 'unranked');
+  }
+
   async createWithQueryRunner(name: string): Promise<Summoner> {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
