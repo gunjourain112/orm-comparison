@@ -29,4 +29,11 @@ export class SummonerRepository {
       .andWhere('summoner.summonerLevel >= :minLevel', { minLevel })
       .getMany();
   }
+
+  findByNameContainingNative(keyword: string): Promise<Summoner[]> {
+    return this.repository.query(
+      `SELECT * FROM summoners WHERE name LIKE $1`,
+      [`%${keyword}%`]
+    );
+  }
 }
