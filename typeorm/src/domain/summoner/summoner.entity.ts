@@ -1,5 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../global/common/base.entity';
+import { SummonerProfile } from './summoner-profile.entity';
+import { MatchParticipant } from '../match/match-participant.entity';
 
 @Entity('summoners')
 export class Summoner extends BaseEntity {
@@ -17,4 +19,10 @@ export class Summoner extends BaseEntity {
 
   @Column({ type: 'varchar', length: 10, nullable: true })
   tagLine: string | null;
+
+  @OneToOne(() => SummonerProfile, (profile) => profile.summoner, { cascade: true })
+  profile: SummonerProfile;
+
+  @OneToMany(() => MatchParticipant, (participant) => participant.summoner)
+  matchParticipants: MatchParticipant[];
 }

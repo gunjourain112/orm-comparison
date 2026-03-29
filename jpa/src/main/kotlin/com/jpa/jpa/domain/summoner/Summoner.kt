@@ -1,5 +1,6 @@
 package com.jpa.jpa.domain.summoner
 
+import com.jpa.jpa.domain.match.MatchParticipant
 import com.jpa.jpa.global.common.BaseEntity
 import jakarta.persistence.*
 
@@ -21,4 +22,11 @@ class Summoner(
 
     @Column(nullable = true, length = 10)
     var tagLine: String? = null
-) : BaseEntity()
+) : BaseEntity() {
+
+    @OneToOne(mappedBy = "summoner", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    var profile: SummonerProfile? = null
+
+    @OneToMany(mappedBy = "summoner")
+    var matchParticipants: MutableList<MatchParticipant> = mutableListOf()
+}
